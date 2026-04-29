@@ -1,0 +1,164 @@
+c{% extends 'base.html' %}
+{% block content %}
+
+<!-- Hero Banner -->
+<div class="hero">
+    <div class="container">
+        <span class="badge-hero">Tableau de bord</span>
+        <h1>Statistiques</h1>
+        <p>Vue d'ensemble des performances académiques des étudiants.</p>
+    </div>
+</div>
+
+<div class="container pb-5">
+
+    <!-- Stat Cards -->
+    <div class="row g-3 mb-4 animate-fadeup">
+        <div class="col-6 col-md-2">
+            <div class="stat-card stat-total">
+                <small>Total</small>
+                <h3>{{ stat.total }}</h3>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="stat-card stat-moy">
+                <small>Moyenne</small>
+                <h3>{{ stat.moyenne }}</h3>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="stat-card stat-med">
+                <small>Médiane</small>
+                <h3>{{ stat.mediane }}</h3>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="stat-card stat-std">
+                <small>Écart-type</small>
+                <h3>{{ stat.ecart_type }}</h3>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="stat-card stat-min">
+                <small>Min</small>
+                <h3>{{ stat.minimum }}</h3>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="stat-card stat-max">
+                <small>Max</small>
+                <h3>{{ stat.maximum }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Graphiques -->
+    <div class="row g-4 animate-fadeup" style="animation-delay:.15s">
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h5 style="font-family:'DM Serif Display',serif; color:var(--bleu); margin-bottom:1rem;">
+                    🎓 Répartition par filière
+                </h5>
+                <canvas id="chartFiliere"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h5 style="font-family:'DM Serif Display',serif; color:var(--bleu); margin-bottom:1rem;">
+                    📊 Distribution des moyennes
+                </h5>
+                <canvas id="chartDistrib"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h5 style="font-family:'DM Serif Display',serif; color:var(--bleu); margin-bottom:1rem;">
+                    🏫 Répartition par niveau
+                </h5>
+                <canvas id="chartNiveau"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h5 style="font-family:'DM Serif Display',serif; color:var(--bleu); margin-bottom:1rem;">
+                    📈 Courbe des moyennes
+                </h5>
+                <canvas id="chartCourbe"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const palette = ['#1a2c5b','#2ecc8f','#3ab0c9','#f6a623','#e05c6a','#8e44ad'];
+
+    // Graphique 1 : filière (camembert)
+    new Chart(document.getElementById('chartFiliere'), {
+        type: 'doughnut',
+        data: {
+            labels: {{ filieres.keys() | list | tojson }},
+            datasets: [{ data: {{ filieres.values() | list | tojson }}, backgroundColor: palette }]
+        },
+        options: { plugins: { legend: { position: 'bottom' } } }
+    });
+
+    // Graphique 2 : distribution (barres)
+    new Chart(document.getElementById('chartDistrib'), {
+        type: 'bar',
+        data: {
+            labels: {{ tranches.keys() | list | tojson }},
+            datasets: [{
+                label: 'Nb étudiants',
+                data: {{ tranches.values() | list | tojson }},
+                backgroundColor: '#2a4494',
+                borderRadius: 6
+            }]
+        },
+        options: { scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } }
+    });
+
+    // Graphique 3 : niveaux (barres horizontales)
+    new Chart(document.getElementById('chartNiveau'), {
+        type: 'bar',
+        data: {
+            labels: {{ niveaux.keys() | list | tojson }},
+            datasets: [{
+                data: {{ niveaux.values() | list | tojson }},
+                backgroundColor: '#2ecc8f',
+                borderRadius: 6
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            scales: { x: { beginAtZero: true } },
+            plugins: { legend: { display: false } }
+        }
+    });
+
+    // Graphique 4 : courbe des moyennes
+    const moyennes = {{ moyennes | tojson }};
+    new Chart(document.getElementById('chartCourbe'), {
+        type: 'line',
+        data: {
+            labels: moyennes.map((_, i) => i + 1),
+            datasets: [{
+                label: 'Moyenne',
+                data: moyennes,
+                borderColor: '#e05c6a',
+                backgroundColor: 'rgba(224,92,106,.1)',
+                tension: 0.4,
+                fill: true,
+                pointRadius: 4,
+                pointBackgroundColor: '#e05c6a'
+            }]
+        },
+        options: { scales: { y: { min: 0, max: 20 } } }
+    });
+
+});
+</script>
+
+{% endblock %}

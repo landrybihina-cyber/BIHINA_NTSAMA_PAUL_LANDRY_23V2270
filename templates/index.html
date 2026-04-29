@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Hero Banner -->
+<div class="hero">
+    <div class="container">
+        <span class="badge-hero">Saisie des données</span>
+        <h1>Enregistrer des étudiants</h1>
+        <p>Remplissez le tableau ci-dessous ligne par ligne, puis sauvegardez en un clic.</p>
+    </div>
+</div>
+
+<div class="container pb-5">
+
+    <!-- Barre d'actions -->
+    <div class="d-flex justify-content-between align-items-center mb-3 animate-fadeup">
+        <h2 style="font-size:1.2rem; color:var(--bleu);">📋 Tableau de saisie</h2>
+        <div class="d-flex gap-2">
+            <button class="btn btn-success" onclick="ajouterLigne()">+ Ajouter une ligne</button>
+            <button class="btn btn-primary" onclick="sauvegarder()">💾 Sauvegarder tout</button>
+        </div>
+    </div>
+
+    <!-- Message flash JS -->
+    <div id="message" class="alert d-none mb-3"></div>
+
+    <!-- Tableau -->
+    <div class="card animate-fadeup" style="animation-delay:.1s">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0" id="tableau">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Filière</th>
+                        <th>Niveau</th>
+                        <th>Note Math</th>
+                        <th>Note Info</th>
+                        <th>Note Anglais</th>
+                        <th>Moyenne</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="corps"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Info vide -->
+    <div id="vide" class="text-center py-5 text-muted animate-fadeup" style="animation-delay:.2s">
+        <div style="font-size:3rem;">📂</div>
+        <p class="mt-2">Aucune ligne. Cliquez sur <strong>+ Ajouter une ligne</strong> pour commencer.</p>
+    </div>
+
+</div>
+
+<script>
+let compteur = 0;
+
+function ajouterLigne() {
+    compteur++;
+    document.getElementById('vide').style.display = 'none';
+    const tbody = document.getElementById('corps');
+    const tr = document.createElement('tr');
+    tr.id = 'ligne-' + compteur;
+    tr.innerHTML = `
+        <td><span class="badge-niveau">${compteur}</span></td>
+        <td><input type="text" class="form-control form-control-sm" name="nom" placeholder="Nom" required></td>
+        <td><input type="text" class="form-control form-control-sm" name="prenom" placeholder="Prénom" required></td>
+        <td><input type="text" class="form-control form-control-sm" name="filiere" placeholder="Filière" required></td>
+        <td>
+            <select class="form-select form-select-sm" name="niveau">
+                <option>L1</option><option>L2</option>
+                <option selected>L3</option><option>M1</option><option>M2</option>
+            </select>
+        </td>
+        <td><input type="number" class="form-control form-control-sm note" name="note_math"
+            min="0" max="20" step="0.5" placeholder="—" oninput="calculerMoyenne(this)"></td>
+        <td><input type="number" class="form-control form-control-sm note" name="note_info"
+            min="0" max="20" step="0.5" placeholder="—" oninput="calculerMoyenne(this)"></td>
+        <td><input type="number" class="form-control form-control-sm note" name="note_anglais"
+            min="0" max="20" step="0.5" placeholder="—" oninput="calculerMoyenne(this)"></td>
+        <td><input type="number" class="form-control form-control-sm bg-light" name="moyenne" readonly placeholder="—"></td>
+        <td><button class="btn btn-danger btn-sm" onclick="supprimerLigne('ligne-${compteur}')">🗑</button></td>
+    `;
+    tbody.appendChild(tr);
+}
+
+function calculerMoyenne(el) {
+    const tr = el.closest('tr');
+    const notes = tr.querySelectorAll('.note');
+    let total = 0, count = 0;
+    notes.forEach(n => {
+        if (n.value !== '') { total += parseFloat(n.value); count++; }
+    });
+    const moy = tr.querySelector('[name="moyenne"]');
+    moy.value = count > 0 ? (total / count).toFixed(2) : '';
+}
+
+function supprimerLigne(id) {
+    document.getElementById(id).remove();
+    if (document.getElementById('corps').children.length === 0) {
+        document.getElementById('vide').style.display = '';
+    }
+}
+
+function sauvegarder() {
+    const rows = document.querySelectorAll('#corps tr');
+    const data = [];
+    rows.forEach(tr => {
+        const get = name => tr.querySelector(`[name="${name}"]`).value;
+        data.push({
+            nom: get('nom'), prenom: get('prenom'), filiere: get('filiere'),
+            niveau: get('niveau'), note_math: get('note_math'),
+            note_info: get('note_info'), note_anglais: get('note_anglais'),
+            moyenne: get('moyenne')
+        });
+    });
+
+    if (data.length === 0) { afficherMsg('Ajoutez au moins une ligne !', 'warning'); return; }
+
+    fetch('/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    .then(r => r.json())
+    .then(d => {
+        afficherMsg(d.message || d.error, d.error ? 'danger' : 'success');
+        if (!d.error) {
+            document.getElementById('corps').innerHTML = '';
+            document.getElementById('vide').style.display = '';
+            compteur = 0;
+        }
+    });
+}
+
+function afficherMsg(msg, type) {
+    const div = document.getElementById('message');
+    div.className = `alert alert-${type}`;
+    div.textContent = msg;
+    setTimeout(() => div.className = 'alert d-none', 4000);
+}
+</script>
+{% endblock %}

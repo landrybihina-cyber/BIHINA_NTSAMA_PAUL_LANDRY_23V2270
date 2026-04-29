@@ -1,0 +1,346 @@
+/* ============================================================
+   EtuData — Feuille de style principale
+   Thème : Académique moderne · Bleu nuit + Vert menthe + Blanc cassé
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+/* ---------- Variables ---------- */
+:root {
+  --bleu:       #1a2c5b;
+  --bleu-mid:   #2a4494;
+  --bleu-light: #e8edf8;
+  --vert:       #2ecc8f;
+  --vert-dark:  #22a873;
+  --blanc:      #f7f8fc;
+  --gris:       #8492a6;
+  --gris-light: #eef0f5;
+  --danger:     #e05c6a;
+  --warning:    #f6a623;
+  --texte:      #1c2338;
+  --card-shadow: 0 4px 24px rgba(26,44,91,.10);
+  --radius:     14px;
+  --radius-sm:  8px;
+  --transition: .25s cubic-bezier(.4,0,.2,1);
+}
+
+/* ---------- Reset & base ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  color: var(--texte);
+  background: var(--blanc);
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, .navbar-brand {
+  font-family: 'DM Serif Display', serif;
+}
+
+/* ---------- NAVBAR ---------- */
+.navbar {
+  background: var(--bleu) !important;
+  padding: 0 2rem;
+  height: 64px;
+  box-shadow: 0 2px 16px rgba(26,44,91,.18);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  color: #fff !important;
+  letter-spacing: .5px;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.navbar-brand::before {
+  content: '🎓';
+  font-size: 1.3rem;
+}
+
+.navbar .nav-link {
+  color: rgba(255,255,255,.78) !important;
+  font-size: .88rem;
+  font-weight: 500;
+  letter-spacing: .3px;
+  padding: .4rem .9rem !important;
+  border-radius: 20px;
+  transition: background var(--transition), color var(--transition);
+  text-decoration: none;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: #fff !important;
+  background: rgba(255,255,255,.14);
+}
+
+.navbar .nav-link.export-link {
+  border: 1px solid rgba(255,255,255,.3);
+  margin-left: .25rem;
+}
+
+/* ---------- HERO BANNER (page index) ---------- */
+.hero {
+  background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu-mid) 60%, #3a5bbb 100%);
+  color: #fff;
+  padding: 3.5rem 0 2.5rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.hero h1 {
+  font-size: 2.2rem;
+  font-style: italic;
+  margin-bottom: .5rem;
+}
+
+.hero p {
+  font-size: 1rem;
+  opacity: .82;
+  font-weight: 300;
+}
+
+.hero .badge-hero {
+  display: inline-block;
+  background: var(--vert);
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 600;
+  padding: .25rem .75rem;
+  border-radius: 20px;
+  margin-bottom: 1rem;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+/* ---------- CARTES ---------- */
+.card {
+  border: none;
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.card:hover {
+  box-shadow: 0 8px 36px rgba(26,44,91,.14);
+  transform: translateY(-2px);
+}
+
+.card-header-custom {
+  background: var(--bleu-light);
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 1rem 1.4rem;
+  border-bottom: 2px solid rgba(42,68,148,.12);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-header-custom h2 {
+  font-size: 1.2rem;
+  color: var(--bleu);
+  margin: 0;
+}
+
+/* ---------- BOUTONS ---------- */
+.btn {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: .45rem 1.1rem;
+  transition: all var(--transition);
+  border: none;
+}
+
+.btn-primary {
+  background: var(--bleu-mid);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--bleu); color: #fff; }
+
+.btn-success {
+  background: var(--vert);
+  color: #fff;
+}
+.btn-success:hover { background: var(--vert-dark); color: #fff; }
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+}
+.btn-danger:hover { background: #c0392b; color: #fff; }
+
+.btn-outline-secondary {
+  border: 1.5px solid var(--gris);
+  color: var(--gris);
+  background: transparent;
+}
+.btn-outline-secondary:hover { background: var(--gris-light); color: var(--texte); }
+
+/* ---------- TABLEAUX ---------- */
+.table {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  font-size: .88rem;
+}
+
+.table thead th {
+  background: var(--bleu);
+  color: #fff;
+  font-weight: 500;
+  font-size: .8rem;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  border: none;
+  padding: .85rem 1rem;
+}
+
+.table tbody tr {
+  transition: background var(--transition);
+}
+
+.table tbody tr:hover {
+  background: var(--bleu-light);
+}
+
+.table tbody td {
+  vertical-align: middle;
+  border-color: var(--gris-light);
+  padding: .7rem 1rem;
+}
+
+.table tbody tr:last-child td { border-bottom: none; }
+
+/* badge niveau */
+.badge-niveau {
+  display: inline-block;
+  padding: .2rem .6rem;
+  border-radius: 20px;
+  font-size: .75rem;
+  font-weight: 600;
+  background: var(--bleu-light);
+  color: var(--bleu-mid);
+}
+
+/* moyenne colorée */
+.moy-good  { color: var(--vert-dark);  font-weight: 600; }
+.moy-mid   { color: var(--warning);    font-weight: 600; }
+.moy-bad   { color: var(--danger);     font-weight: 600; }
+
+/* ---------- FORMULAIRE SAISIE ---------- */
+.form-control, .form-select {
+  border-radius: var(--radius-sm);
+  border: 1.5px solid #dde3f0;
+  font-size: .88rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--bleu-mid);
+  box-shadow: 0 0 0 3px rgba(42,68,148,.12);
+  outline: none;
+}
+
+/* ---------- STAT CARDS (stats.html) ---------- */
+.stat-card {
+  border-radius: var(--radius);
+  padding: 1.3rem 1.1rem;
+  text-align: center;
+  color: #fff;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  bottom: -18px; right: -18px;
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.12);
+}
+
+.stat-card small { font-size: .75rem; opacity: .85; letter-spacing: .5px; text-transform: uppercase; }
+.stat-card h3   { font-size: 2rem; margin-top: .2rem; font-family: 'DM Serif Display', serif; }
+
+.stat-total   { background: linear-gradient(135deg, var(--bleu),    var(--bleu-mid)); }
+.stat-moy     { background: linear-gradient(135deg, var(--vert),    var(--vert-dark)); }
+.stat-med     { background: linear-gradient(135deg, #3ab0c9,        #2589a0); }
+.stat-std     { background: linear-gradient(135deg, #f6a623,        #d4881a); }
+.stat-min     { background: linear-gradient(135deg, var(--danger),  #c0392b); }
+.stat-max     { background: linear-gradient(135deg, #8e44ad,        #6c3483); }
+
+/* ---------- ALERTS ---------- */
+.alert {
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: .9rem;
+}
+
+.alert-success { background: #d4f5e9; color: #1a6645; }
+.alert-danger  { background: #fde8ea; color: #8b1a24; }
+.alert-warning { background: #fef3da; color: #7a5000; }
+
+/* ---------- INPUT SEARCH ---------- */
+.search-wrap {
+  position: relative;
+}
+.search-wrap input {
+  padding-left: 2.5rem;
+}
+.search-wrap::before {
+  content: '🔍';
+  position: absolute;
+  left: .8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: .85rem;
+  pointer-events: none;
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+  margin-top: 4rem;
+  padding: 1.5rem 0;
+  text-align: center;
+  font-size: .8rem;
+  color: var(--gris);
+  border-top: 1px solid var(--gris-light);
+}
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeup {
+  animation: fadeUp .5s ease both;
+}
+
+.container > * { animation: fadeUp .4s ease both; }
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .stat-card h3 { font-size: 1.5rem; }
+  .navbar { padding: 0 1rem; }
+}

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Hero Banner -->
+<div class="hero">
+    <div class="container">
+        <span class="badge-hero">Registre</span>
+        <h1>Liste des Étudiants</h1>
+        <p>Consultez, recherchez et gérez tous les étudiants enregistrés.</p>
+    </div>
+</div>
+
+<div class="container pb-5">
+
+    <!-- Barre de recherche -->
+    <div class="card p-3 mb-4 animate-fadeup">
+        <form method="GET" action="/liste" class="d-flex gap-2">
+            <div class="search-wrap flex-grow-1">
+                <input type="text" name="search" class="form-control"
+                       placeholder="Rechercher par nom, prénom ou filière..."
+                       value="{{ search }}">
+            </div>
+            <button class="btn btn-primary">Rechercher</button>
+            {% if search %}
+            <a href="/liste" class="btn btn-outline-secondary">✕ Effacer</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- Tableau -->
+    <div class="card animate-fadeup" style="animation-delay:.1s">
+        <div class="card-header-custom">
+            <h2>👥 Étudiants enregistrés</h2>
+            <span class="badge bg-primary rounded-pill">
+                {{ students|length }} étudiant{{ 's' if students|length > 1 else '' }}
+            </span>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th><th>Nom</th><th>Prénom</th><th>Filière</th><th>Niveau</th>
+                        <th>Math</th><th>Info</th><th>Anglais</th><th>Moyenne</th><th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in students %}
+                    <tr>
+                        <td>{{ s.id }}</td>
+                        <td><strong>{{ s.nom }}</strong></td>
+                        <td>{{ s.prenom }}</td>
+                        <td>{{ s.filiere }}</td>
+                        <td><span class="badge-niveau">{{ s.niveau }}</span></td>
+                        <td>{{ s.note_math or '—' }}</td>
+                        <td>{{ s.note_info or '—' }}</td>
+                        <td>{{ s.note_anglais or '—' }}</td>
+                        <td>
+                            {% if s.moyenne %}
+                                {% if s.moyenne >= 10 %}
+                                    <span class="moy-good">{{ s.moyenne }}</span>
+                                {% elif s.moyenne >= 7 %}
+                                    <span class="moy-mid">{{ s.moyenne }}</span>
+                                {% else %}
+                                    <span class="moy-bad">{{ s.moyenne }}</span>
+                                {% endif %}
+                            {% else %}—{% endif %}
+                        </td>
+                        <td>
+                            <a href="/delete/{{ s.id }}"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('Supprimer {{ s.nom }} {{ s.prenom }} ?')">
+                                🗑 Supprimer
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="10" class="text-center py-5 text-muted">
+                            <div style="font-size:2.5rem">📭</div>
+                            <p class="mt-2">Aucun étudiant trouvé.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
