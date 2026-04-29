@@ -344,3 +344,32 @@ footer {
   .stat-card h3 { font-size: 1.5rem; }
   .navbar { padding: 0 1rem; }
 }
+
+
+/* Conteneur pour rendre les tableaux scrollables sur petit écran */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Défilement fluide sur iPhone */
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* Force une largeur mini pour garder les colonnes lisibles */
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+    /* Les boutons prennent toute la largeur sur mobile */
+    .btn, button {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+}

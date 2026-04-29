@@ -36,13 +36,14 @@
             </span>
         </div>
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead>
+            <div class="table-container"></div>
+               <table class="table table-hover mb-0">
+                 <thead>
                     <tr>
                         <th>#</th><th>Nom</th><th>Prénom</th><th>Filière</th><th>Niveau</th>
                         <th>Math</th><th>Info</th><th>Anglais</th><th>Moyenne</th><th>Action</th>
                     </tr>
-                </thead>
+                 </thead>
                 <tbody>
                     {% for s in students %}
                     <tr>
@@ -82,7 +83,8 @@
                     </tr>
                     {% endfor %}
                 </tbody>
-            </table>
+              </table>
+           </div>
         </div>
     </div>
 
