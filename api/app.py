@@ -9,7 +9,7 @@ def create_app():
     app.config.from_object(Config)               # CORR: 'config' → 'Config' (variable importée)
     db.init_app(app)
 
-    from api.routes import main                      # CORR: 'from app.routes' → 'from routes' (pas de package app)
+    from routes import main                      # CORR: 'from app.routes' → 'from routes' (pas de package app)
     app.register_blueprint(main)
 
     with app.app_context():
