@@ -5,9 +5,14 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 def create_app():
-    # FORCE le chemin d'instance vers /tmp pour éviter l'erreur Read-only
-    app = Flask(__name__, instance_path='/tmp')
-    
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    app = Flask(
+        __name__,
+        instance_path='/tmp',
+        template_folder=os.path.join(BASE_DIR, "templates")
+    )
+
     if os.environ.get('VERCEL'):
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
     else:
