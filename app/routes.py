@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from . import db
 from .model import Student
 import pandas as pd
+import numpy as np          # ← import manquant ajouté
 import io
 
 main = Blueprint('main', __name__)

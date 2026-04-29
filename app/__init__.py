@@ -5,8 +5,12 @@ from .config import Config
 db = SQLAlchemy()
 
 def create_app():
-    # On remonte d'un niveau pour trouver templates et static car on est dans le dossier /app
-    app = Flask(__name__, template_folder='../templates', static_folder='../static')
+    app = Flask(
+        __name__,
+        template_folder='../templates',
+        static_folder='../static',
+        instance_path='/tmp'
+    )
     app.config.from_object(Config)
     db.init_app(app)
 
