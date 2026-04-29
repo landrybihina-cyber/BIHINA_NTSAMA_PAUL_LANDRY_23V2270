@@ -1,10 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, send_file, jsonify
 from . import db
-from .model import Student                        # CORR: 'from app.models' → 'from model' (fichier s'appelle model.py)
+from .model import Student
 import pandas as pd
-import numpy as np
 import io
-
 
 main = Blueprint('main', __name__)
 
