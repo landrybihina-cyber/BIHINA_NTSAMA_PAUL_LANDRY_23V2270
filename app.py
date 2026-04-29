@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from api.config import Config                        # CORR: 'Config' avec majuscule (nom correct de la classe)
+from config import Config                        # CORR: 'Config' avec majuscule (nom correct de la classe)
 
 db = SQLAlchemy()
 
