@@ -5,17 +5,16 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 def create_app():
-    app = Flask(__name__)
+    # FORCE le chemin d'instance vers /tmp pour éviter l'erreur Read-only
+    app = Flask(__name__, instance_path='/tmp')
     
     if os.environ.get('VERCEL'):
-        # On force l'écriture dans /tmp car c'est le seul endroit autorisé
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
     else:
-        # En local, on garde ton réglage habituel
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///project.db'
     
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = 'ta_cle_secrete'
+    app.config['SECRET_KEY'] = 'dev_key_123'
 
     db.init_app(app)
 
